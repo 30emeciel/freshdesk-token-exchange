@@ -1,0 +1,17 @@
+steps:
+  - name: "gcr.io/trentiemeciel/poetry-builder"
+    args: ["export", "--format", "requirements.txt", "--output", "requirements.txt", "--without-hashes"]
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: "gcloud"
+    args:
+    - functions
+    - deploy
+    - freshdesk-token-exchange
+    - --project=trentiemeciel
+    - --source=.  
+    - --region=europe-west3
+    - --entry-point=from_request
+    - --runtime=python38
+    - --memory=128
+    - --trigger-http
+    - --allow-unauthenticated
